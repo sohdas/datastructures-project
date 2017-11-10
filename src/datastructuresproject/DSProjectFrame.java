@@ -27,7 +27,7 @@ import javax.swing.BorderFactory;
  * @author Somnath
  */
 public class DSProjectFrame extends javax.swing.JFrame implements ActionListener{
-
+    
     private LocalTime lt = LocalTime.now();
     private int tx, ty;
     /**
@@ -59,6 +59,7 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
         notesButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         notesText = new javax.swing.JTextArea();
+        addedNotif = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -78,6 +79,8 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
         titleImageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/DS_Project/src/datastructuresproject/myMedPremium.png"))); // NOI18N
         titleImageLabel.setOpaque(true);
 
+        jTabbedPane1.setBackground(new java.awt.Color(97, 96, 96));
+        jTabbedPane1.setFont(new java.awt.Font("Verdana", 0, 13)); // NOI18N
         jTabbedPane1.setName(""); // NOI18N
 
         jProgressBar1.setForeground(new java.awt.Color(219, 87, 56));
@@ -94,7 +97,7 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(34, 34, 34)
                 .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(167, Short.MAX_VALUE))
+                .addContainerGap(173, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(timeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -112,10 +115,13 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
 
         jTabbedPane1.addTab("Medications", jPanel1);
 
-        jLabel1.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(54, 97, 106));
+        jLabel1.setFont(new java.awt.Font("Verdana", 0, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(49, 29, 26));
         jLabel1.setText("How are you feeling?");
 
+        notesButton.setBackground(new java.awt.Color(21, 38, 42));
+        notesButton.setFont(new java.awt.Font("Verdana", 0, 13)); // NOI18N
+        notesButton.setForeground(new java.awt.Color(21, 38, 42));
         notesButton.setText("Add to notes");
         notesButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -124,8 +130,19 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
         });
 
         notesText.setColumns(20);
+        notesText.setFont(new java.awt.Font("Verdana", 0, 13)); // NOI18N
+        notesText.setForeground(new java.awt.Color(21, 38, 42));
         notesText.setRows(5);
         jScrollPane1.setViewportView(notesText);
+
+        addedNotif.setFont(new java.awt.Font("Verdana", 0, 24)); // NOI18N
+        addedNotif.setForeground(new java.awt.Color(238, 238, 238));
+        addedNotif.setText("Added to your notes");
+        addedNotif.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentHidden(java.awt.event.ComponentEvent evt) {
+                addedNotifComponentHidden(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -134,14 +151,17 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(153, 153, 153)
-                        .addComponent(notesButton))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(52, 52, 52)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(56, Short.MAX_VALUE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(153, 153, 153)
+                        .addComponent(notesButton))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(98, 98, 98)
+                        .addComponent(addedNotif)))
+                .addContainerGap(62, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -149,10 +169,12 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
                 .addGap(33, 33, 33)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(notesButton)
-                .addGap(76, 76, 76))
+                .addGap(18, 18, 18)
+                .addComponent(addedNotif)
+                .addGap(42, 42, 42))
         );
 
         jTabbedPane1.addTab("Notes", jPanel2);
@@ -161,7 +183,7 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 441, Short.MAX_VALUE)
+            .addGap(0, 447, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -180,14 +202,12 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(dragLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jTabbedPane1))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTabbedPane1))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -216,18 +236,23 @@ System.out.println("Button pushed.");
         File outputFile = new File("history.txt");
    PrintWriter output = null;
         try {
-            output = new  PrintWriter(new FileOutputStream(outputFile));
+            output = new  PrintWriter(new FileOutputStream("history.txt", true));
         } catch (FileNotFoundException ex) {
             Logger.getLogger(DSProjectFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
 		
-    output.println(notesText.getText());
+    output.println(notesText.getText()+"::"+lt);
 notesText.setText("");
     output.close();
+    addedNotif.setForeground(new java.awt.Color(54, 97, 106));
  
 
  		
     }//GEN-LAST:event_notesButtonActionPerformed
+
+    private void addedNotifComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_addedNotifComponentHidden
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addedNotifComponentHidden
 
     /**
      * @param args the command line arguments
@@ -260,6 +285,7 @@ notesText.setText("");
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new DSProjectFrame().setVisible(true);
+               
             }
         });
     
@@ -294,6 +320,7 @@ dragLabel.setLocation(m.getXOnScreen()-tx,m.getYOnScreen-ty);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel addedNotif;
     private javax.swing.JLabel dragLabel;
     private javax.swing.JButton exitButton;
     private javax.swing.JLabel jLabel1;
