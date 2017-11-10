@@ -45,8 +45,10 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
         jPanel1 = new javax.swing.JPanel();
         jProgressBar1 = new javax.swing.JProgressBar();
         timeLabel = new javax.swing.JLabel();
-        jTabbedPane2 = new javax.swing.JTabbedPane();
-        jTabbedPane3 = new javax.swing.JTabbedPane();
+        jPanel3 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jPanel4 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(250, 228, 228));
@@ -99,8 +101,42 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
         );
 
         jTabbedPane1.addTab("Medications", jPanel1);
-        jTabbedPane1.addTab("Notes", jTabbedPane2);
-        jTabbedPane1.addTab("History", jTabbedPane3);
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(74, 74, 74)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(91, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(70, 70, 70)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(131, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("tab2", jPanel3);
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 441, Short.MAX_VALUE)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 453, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("tab3", jPanel4);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -196,13 +232,16 @@ dragLabel.setLocation(m.getXOnScreen()-tx,m.getYOnScreen-ty);
     public void actionPerformed(ActionEvent e) 
     {
         lt = LocalTime.now();
-      
+        String minAppend = "";
+        if(lt.getMinute()<10)
+     minAppend = "0";
+  
        if(lt.getHour()>12)
-            timeLabel.setText(lt.getHour()-12 + ": "+ lt.getMinute() +" PM");
+            timeLabel.setText(lt.getHour()-12 + ": "+ minAppend+lt.getMinute() +" PM");
        else if(lt.getHour() == 12)
-           timeLabel.setText(lt.getHour() + ": "+ lt.getMinute() + " PM");
+           timeLabel.setText(lt.getHour() + ": "+ minAppend+lt.getMinute() + " PM");
        else
-           timeLabel.setText(lt.getHour() + ": "+lt.getMinute()+" AM");
+           timeLabel.setText(lt.getHour() + ": "+minAppend+lt.getMinute()+" AM");
         repaint();
     }
 
@@ -210,10 +249,12 @@ dragLabel.setLocation(m.getXOnScreen()-tx,m.getYOnScreen-ty);
     private javax.swing.JLabel dragLabel;
     private javax.swing.JButton exitButton;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JProgressBar jProgressBar1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JTabbedPane jTabbedPane3;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel timeLabel;
     private javax.swing.JLabel titleImageLabel;
     // End of variables declaration//GEN-END:variables
