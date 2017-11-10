@@ -3,14 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package DS_Project;
+package DS_Project.src.datastructuresproject;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import javax.swing.Timer;
 import java.time.LocalTime;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 
 /**
@@ -45,10 +54,12 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
         jPanel1 = new javax.swing.JPanel();
         jProgressBar1 = new javax.swing.JProgressBar();
         timeLabel = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        notesButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jPanel4 = new javax.swing.JPanel();
+        notesText = new javax.swing.JTextArea();
+        jPanel3 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(250, 228, 228));
@@ -64,8 +75,7 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
         });
 
         titleImageLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titleImageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/DS_Project/myMedPremium.png"))); // NOI18N
-        titleImageLabel.setDisabledIcon(null);
+        titleImageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/DS_Project/src/datastructuresproject/myMedPremium.png"))); // NOI18N
         titleImageLabel.setOpaque(true);
 
         jTabbedPane1.setName(""); // NOI18N
@@ -102,41 +112,63 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
 
         jTabbedPane1.addTab("Medications", jPanel1);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        jLabel1.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(54, 97, 106));
+        jLabel1.setText("How are you feeling?");
+
+        notesButton.setText("Add to notes");
+        notesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                notesButtonActionPerformed(evt);
+            }
+        });
+
+        notesText.setColumns(20);
+        notesText.setRows(5);
+        jScrollPane1.setViewportView(notesText);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(153, 153, 153)
+                        .addComponent(notesButton))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(52, 52, 52)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(56, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(notesButton)
+                .addGap(76, 76, 76))
+        );
+
+        jTabbedPane1.addTab("Notes", jPanel2);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(74, 74, 74)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(91, Short.MAX_VALUE))
+            .addGap(0, 441, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(70, 70, 70)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(131, Short.MAX_VALUE))
+            .addGap(0, 435, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addTab("tab2", jPanel3);
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 441, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 453, Short.MAX_VALUE)
-        );
-
-        jTabbedPane1.addTab("tab3", jPanel4);
+        jTabbedPane1.addTab("History", jPanel3);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -177,6 +209,25 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
       System.exit(0);
     }//GEN-LAST:event_exitButtonActionPerformed
+
+    private void notesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_notesButtonActionPerformed
+        // TODO add your handling code here:
+System.out.println("Button pushed.");
+        File outputFile = new File("history.txt");
+   PrintWriter output = null;
+        try {
+            output = new  PrintWriter(new FileOutputStream(outputFile));
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(DSProjectFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+		
+    output.println(notesText.getText());
+notesText.setText("");
+    output.close();
+ 
+
+ 		
+    }//GEN-LAST:event_notesButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -232,29 +283,28 @@ dragLabel.setLocation(m.getXOnScreen()-tx,m.getYOnScreen-ty);
     public void actionPerformed(ActionEvent e) 
     {
         lt = LocalTime.now();
-        String minAppend = "";
-        if(lt.getMinute()<10)
-     minAppend = "0";
-  
+      
        if(lt.getHour()>12)
-            timeLabel.setText(lt.getHour()-12 + ": "+ minAppend+lt.getMinute() +" PM");
+            timeLabel.setText(lt.getHour()-12 + ": "+ lt.getMinute() +" PM");
        else if(lt.getHour() == 12)
-           timeLabel.setText(lt.getHour() + ": "+ minAppend+lt.getMinute() + " PM");
+           timeLabel.setText(lt.getHour() + ": "+ lt.getMinute() + " PM");
        else
-           timeLabel.setText(lt.getHour() + ": "+minAppend+lt.getMinute()+" AM");
+           timeLabel.setText(lt.getHour() + ": "+lt.getMinute()+" AM");
         repaint();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel dragLabel;
     private javax.swing.JButton exitButton;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JButton notesButton;
+    private javax.swing.JTextArea notesText;
     private javax.swing.JLabel timeLabel;
     private javax.swing.JLabel titleImageLabel;
     // End of variables declaration//GEN-END:variables
