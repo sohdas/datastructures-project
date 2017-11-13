@@ -50,8 +50,8 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        exitButton = new javax.swing.JButton();
         titleImageLabel = new javax.swing.JLabel();
+        exitButton = new javax.swing.JButton();
         dragLabel = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         medPanel = new javax.swing.JPanel();
@@ -63,8 +63,9 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
         notesText = new javax.swing.JTextArea();
         addedNotif = new javax.swing.JLabel();
         historyPanel = new javax.swing.JPanel();
-        historyLabel = new javax.swing.JLabel();
         historyButton = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        historyLabel = new javax.swing.JTextArea();
         dLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -74,16 +75,16 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
         setUndecorated(true);
         setResizable(false);
 
+        titleImageLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        titleImageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/datastructuresproject/myMedPremium.png"))); // NOI18N
+        titleImageLabel.setOpaque(true);
+
         exitButton.setText("Exit");
         exitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exitButtonActionPerformed(evt);
             }
         });
-
-        titleImageLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titleImageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/datastructuresproject/myMedPremium.png"))); // NOI18N
-        titleImageLabel.setOpaque(true);
 
         jTabbedPane1.setBackground(new java.awt.Color(29, 96, 103));
         jTabbedPane1.setToolTipText("");
@@ -180,11 +181,6 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
 
         jTabbedPane1.addTab("Notes", notesPanel);
 
-        historyLabel.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
-        historyLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        historyLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        historyLabel.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
-
         historyButton.setBackground(new java.awt.Color(21, 38, 42));
         historyButton.setFont(new java.awt.Font("Verdana", 0, 13)); // NOI18N
         historyButton.setForeground(new java.awt.Color(21, 38, 42));
@@ -195,27 +191,32 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
             }
         });
 
+        historyLabel.setEditable(false);
+        historyLabel.setColumns(20);
+        historyLabel.setRows(5);
+        jScrollPane2.setViewportView(historyLabel);
+
         javax.swing.GroupLayout historyPanelLayout = new javax.swing.GroupLayout(historyPanel);
         historyPanel.setLayout(historyPanelLayout);
         historyPanelLayout.setHorizontalGroup(
             historyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(historyPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(historyLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(historyPanelLayout.createSequentialGroup()
                 .addGap(161, 161, 161)
                 .addComponent(historyButton)
                 .addContainerGap(170, Short.MAX_VALUE))
+            .addGroup(historyPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2)
+                .addContainerGap())
         );
         historyPanelLayout.setVerticalGroup(
             historyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(historyPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(historyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(historyButton)
-                .addContainerGap(66, Short.MAX_VALUE))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("History", historyPanel);
@@ -337,7 +338,8 @@ notesText.setText("");
                 new BufferedReader(fileReader);
 
             while((line = bufferedReader.readLine()) != null) {
-                historyLabel.setText(" - "+line);
+                historyLabel.setText(historyLabel.getText()+"\n - "+line);
+          
             }   
 
             // Always close files.
@@ -428,10 +430,11 @@ notesText.setText("");
     private javax.swing.JLabel dragLabel;
     private javax.swing.JButton exitButton;
     private javax.swing.JButton historyButton;
-    private javax.swing.JLabel historyLabel;
+    private javax.swing.JTextArea historyLabel;
     private javax.swing.JPanel historyPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JPanel medPanel;
     private javax.swing.JButton notesButton;
