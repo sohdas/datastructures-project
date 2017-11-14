@@ -5,6 +5,7 @@
  */
 package datastructuresproject;
 
+import static com.sun.org.apache.xerces.internal.impl.dtd.XMLDTDLoader.LOCALE;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,6 +21,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import javax.swing.Timer;
 import java.time.LocalTime;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
@@ -31,6 +34,7 @@ import javax.swing.BorderFactory;
 public class DSProjectFrame extends javax.swing.JFrame implements ActionListener{
     
     private LocalTime lt = LocalTime.now();
+    private final Calendar c = Calendar.getInstance(Locale.US);
     private File outputNotes = new File("src/datastructuresproject/notesHistory.txt");
     private int xMouse, yMouse;
     /**
@@ -70,8 +74,8 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("MyMed Premium");
-        setBackground(new java.awt.Color(250, 228, 228));
-        setForeground(java.awt.Color.pink);
+        setBackground(new java.awt.Color(255, 153, 51));
+        setForeground(java.awt.Color.yellow);
         setUndecorated(true);
         setResizable(false);
 
@@ -154,15 +158,16 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
                 .addGroup(notesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(notesPanelLayout.createSequentialGroup()
                         .addGap(52, 52, 52)
-                        .addGroup(notesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(notesPanelLayout.createSequentialGroup()
-                        .addGap(153, 153, 153)
-                        .addComponent(notesButton))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(notesPanelLayout.createSequentialGroup()
                         .addGap(98, 98, 98)
-                        .addComponent(addedNotif)))
+                        .addComponent(addedNotif))
+                    .addGroup(notesPanelLayout.createSequentialGroup()
+                        .addGap(92, 92, 92)
+                        .addComponent(jLabel1))
+                    .addGroup(notesPanelLayout.createSequentialGroup()
+                        .addGap(162, 162, 162)
+                        .addComponent(notesButton)))
                 .addContainerGap(65, Short.MAX_VALUE))
         );
         notesPanelLayout.setVerticalGroup(
@@ -171,8 +176,8 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
                 .addGap(33, 33, 33)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(notesButton)
                 .addGap(18, 18, 18)
                 .addComponent(addedNotif)
@@ -184,7 +189,7 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
         historyButton.setBackground(new java.awt.Color(21, 38, 42));
         historyButton.setFont(new java.awt.Font("Verdana", 0, 13)); // NOI18N
         historyButton.setForeground(new java.awt.Color(21, 38, 42));
-        historyButton.setText("Show History");
+        historyButton.setText("Refresh History");
         historyButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 historyButtonActionPerformed(evt);
@@ -201,13 +206,13 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
         historyPanelLayout.setHorizontalGroup(
             historyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(historyPanelLayout.createSequentialGroup()
-                .addGap(161, 161, 161)
-                .addComponent(historyButton)
-                .addContainerGap(170, Short.MAX_VALUE))
-            .addGroup(historyPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(historyPanelLayout.createSequentialGroup()
+                .addGap(151, 151, 151)
+                .addComponent(historyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         historyPanelLayout.setVerticalGroup(
             historyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -216,7 +221,7 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(historyButton)
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("History", historyPanel);
@@ -296,8 +301,8 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
         } catch (FileNotFoundException ex) {
             Logger.getLogger(DSProjectFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-		
-    output.println("\""+notesText.getText()+"\"  @"+ lt.toString());
+
+    output.println("\""+notesText.getText()+"\"   "+ c.get(Calendar.MONTH)+"/"+c.get(Calendar.DAY_OF_MONTH)+ "/"+c.get(Calendar.YEAR)+" at "+timeLabel.getText());
 notesText.setText("");
     output.close();
     addedNotif.setForeground(new java.awt.Color(54, 97, 106));
@@ -328,7 +333,7 @@ notesText.setText("");
 
     private void historyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_historyButtonActionPerformed
          try {
-             String line = null;
+             String line = null, hist = "";
             // FileReader reads text files in the default encoding.
             FileReader fileReader = 
                 new FileReader(outputNotes);
@@ -338,10 +343,13 @@ notesText.setText("");
                 new BufferedReader(fileReader);
 
             while((line = bufferedReader.readLine()) != null) {
-                historyLabel.setText(historyLabel.getText()+"\n - "+line);
+                
+                hist += "\n - "+line;
           
             }   
-
+if(!hist.equalsIgnoreCase(historyLabel.getText()))
+    historyLabel.setText(hist);
+    
             // Always close files.
             bufferedReader.close();         
         }
@@ -410,15 +418,15 @@ notesText.setText("");
       
          if(lt.getHour()>12)
          {
-            timeLabel.setText(lt.getHour()-12 + ": "+ minAppend+lt.getMinute() +" PM");
+            timeLabel.setText(lt.getHour()-12 + ":"+ minAppend+lt.getMinute() +" PM");
             }
          else if(lt.getHour() == 12)
          {
-           timeLabel.setText(lt.getHour() + ": "+ minAppend+lt.getMinute() + " PM");
+           timeLabel.setText(lt.getHour() + ":"+ minAppend+lt.getMinute() + " PM");
              }
          else
          {
-           timeLabel.setText(lt.getHour() + ": "+minAppend+lt.getMinute()+" AM");
+           timeLabel.setText(lt.getHour() + ":"+minAppend+lt.getMinute()+" AM");
          }
           repaint();
     }
