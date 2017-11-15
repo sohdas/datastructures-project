@@ -44,6 +44,8 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
         initComponents(); 
         getRootPane().setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, new Color(54,97,106)));
         startTimer();
+        buttonGroup1.add(AMButton);
+        buttonGroup1.add(PMButton);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -54,12 +56,28 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         titleImageLabel = new javax.swing.JLabel();
         exitButton = new javax.swing.JButton();
         dragLabel = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         medPanel = new javax.swing.JPanel();
         timeLabel = new javax.swing.JLabel();
+        dateLabel = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        medSubmissionPanel = new javax.swing.JPanel();
+        medicationField = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        medsToTakeSpinner = new javax.swing.JSpinner();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        medsTotalSpinner = new javax.swing.JSpinner();
+        jLabel5 = new javax.swing.JLabel();
+        hourSpinner = new javax.swing.JSpinner();
+        minuteSpinner = new javax.swing.JSpinner();
+        PMButton = new javax.swing.JRadioButton();
+        AMButton = new javax.swing.JRadioButton();
+        medSubmissionButton = new javax.swing.JButton();
         notesPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         notesButton = new javax.swing.JButton();
@@ -81,6 +99,7 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
 
         titleImageLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         titleImageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/datastructuresproject/myMedPremium.png"))); // NOI18N
+        titleImageLabel.setToolTipText("My Med is an organization devoted to be the best in medication reminders");
         titleImageLabel.setOpaque(true);
 
         exitButton.setText("Exit");
@@ -96,9 +115,127 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
         jTabbedPane1.setName(""); // NOI18N
         jTabbedPane1.setOpaque(true);
 
-        timeLabel.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
+        timeLabel.setFont(new java.awt.Font("Arial Unicode MS", 1, 36)); // NOI18N
         timeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         timeLabel.setText("Loading Time...");
+
+        dateLabel.setFont(new java.awt.Font("Segoe UI Semibold", 0, 24)); // NOI18N
+        dateLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        dateLabel.setText("Loading Date...");
+        dateLabel.setToolTipText("");
+        dateLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+
+        jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 203, Short.MAX_VALUE)
+        );
+
+        medSubmissionPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+
+        medicationField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                medicationFieldActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Medication:");
+
+        jLabel3.setText("Tablets / Pills to take:");
+
+        jLabel4.setText("Tablets / Pills total:");
+
+        jLabel5.setText("Time of Day: ");
+
+        hourSpinner.setModel(new javax.swing.SpinnerNumberModel(12, 1, 12, 1));
+
+        minuteSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, 45, 15));
+
+        PMButton.setText("PM");
+
+        AMButton.setSelected(true);
+        AMButton.setText("AM");
+        AMButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AMButtonActionPerformed(evt);
+            }
+        });
+
+        medSubmissionButton.setText("Submit Medication");
+
+        javax.swing.GroupLayout medSubmissionPanelLayout = new javax.swing.GroupLayout(medSubmissionPanel);
+        medSubmissionPanel.setLayout(medSubmissionPanelLayout);
+        medSubmissionPanelLayout.setHorizontalGroup(
+            medSubmissionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(medSubmissionPanelLayout.createSequentialGroup()
+                .addGroup(medSubmissionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(medSubmissionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(medSubmissionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(medSubmissionPanelLayout.createSequentialGroup()
+                            .addGroup(medSubmissionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(medSubmissionPanelLayout.createSequentialGroup()
+                                    .addGap(12, 12, 12)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(medicationField, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(medSubmissionPanelLayout.createSequentialGroup()
+                                    .addContainerGap()
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addGroup(medSubmissionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(medSubmissionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(medsToTakeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(medSubmissionPanelLayout.createSequentialGroup()
+                                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(25, 25, 25)
+                                        .addComponent(medsTotalSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(medSubmissionPanelLayout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(hourSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(minuteSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(AMButton, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(PMButton))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        medSubmissionPanelLayout.setVerticalGroup(
+            medSubmissionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(medSubmissionPanelLayout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addGroup(medSubmissionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(medSubmissionPanelLayout.createSequentialGroup()
+                        .addGroup(medSubmissionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(medsToTakeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(medSubmissionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(medsTotalSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(medSubmissionPanelLayout.createSequentialGroup()
+                        .addGroup(medSubmissionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(medicationField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel5)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(medSubmissionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(hourSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(minuteSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(PMButton)
+                    .addComponent(AMButton)
+                    .addComponent(medSubmissionButton))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout medPanelLayout = new javax.swing.GroupLayout(medPanel);
         medPanel.setLayout(medPanelLayout);
@@ -106,15 +243,28 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
             medPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(medPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(timeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(medPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, medPanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(dateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(37, 37, 37))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, medPanelLayout.createSequentialGroup()
+                        .addGroup(medPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(medSubmissionPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(timeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE))
+                        .addContainerGap())))
         );
         medPanelLayout.setVerticalGroup(
             medPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, medPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(timeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(327, Short.MAX_VALUE))
+                .addComponent(timeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(dateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(medSubmissionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jTabbedPane1.addTab("Medications", medPanel);
@@ -168,7 +318,7 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
                     .addGroup(notesPanelLayout.createSequentialGroup()
                         .addGap(162, 162, 162)
                         .addComponent(notesButton)))
-                .addContainerGap(65, Short.MAX_VALUE))
+                .addContainerGap(77, Short.MAX_VALUE))
         );
         notesPanelLayout.setVerticalGroup(
             notesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -207,7 +357,7 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
             historyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(historyPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(historyPanelLayout.createSequentialGroup()
                 .addGap(151, 151, 151)
@@ -263,10 +413,10 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(titleImageLabel)
-                        .addGap(95, 95, 95))
+                        .addGap(87, 87, 87))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(24, 24, 24))))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -276,8 +426,8 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
                     .addComponent(dLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(titleImageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 481, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 476, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(exitButton)
                 .addContainerGap())
@@ -302,7 +452,7 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
             Logger.getLogger(DSProjectFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-    output.println("\""+notesText.getText()+"\"   "+ c.get(Calendar.MONTH)+"/"+c.get(Calendar.DAY_OF_MONTH)+ "/"+c.get(Calendar.YEAR)+" at "+timeLabel.getText());
+    output.println("\""+notesText.getText()+"\"   ~"+ c.get(Calendar.MONTH)+"/"+c.get(Calendar.DAY_OF_MONTH)+ "/"+c.get(Calendar.YEAR)+" at "+timeLabel.getText());
 notesText.setText("");
     output.close();
     addedNotif.setForeground(new java.awt.Color(54, 97, 106));
@@ -364,6 +514,14 @@ if(!hist.equalsIgnoreCase(historyLabel.getText()))
          }
     }//GEN-LAST:event_historyButtonActionPerformed
 
+    private void medicationFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_medicationFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_medicationFieldActionPerformed
+
+    private void AMButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AMButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_AMButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -375,7 +533,7 @@ if(!hist.equalsIgnoreCase(historyLabel.getText()))
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Windows".equals(info.getName())) {
+                if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -412,39 +570,61 @@ if(!hist.equalsIgnoreCase(historyLabel.getText()))
     {
         lt = LocalTime.now();
       String minAppend = "";
+      String minColon = ":";
       if(lt.getMinute()<10)
     minAppend = "0";
+      if(lt.getSecond()%2 == 0)
+          minColon = " ";
  
       
          if(lt.getHour()>12)
          {
-            timeLabel.setText(lt.getHour()-12 + ":"+ minAppend+lt.getMinute() +" PM");
+            timeLabel.setText(lt.getHour()-12 + minColon+ minAppend+lt.getMinute() +" PM");
             }
          else if(lt.getHour() == 12)
          {
-           timeLabel.setText(lt.getHour() + ":"+ minAppend+lt.getMinute() + " PM");
+           timeLabel.setText(lt.getHour() + minColon+ minAppend+lt.getMinute() + " PM");
              }
          else
          {
-           timeLabel.setText(lt.getHour() + ":"+minAppend+lt.getMinute()+" AM");
+           timeLabel.setText(lt.getHour() + minColon+minAppend+lt.getMinute()+" AM");
          }
+         
+         dateLabel.setText((c.get(Calendar.MONTH)+1)+"/"+c.get(Calendar.DAY_OF_MONTH) + "/"+c.get(Calendar.YEAR));
+       //  timeLabel.setText(timeLabel.getText() + " " + Calendar)
           repaint();
     }
          
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JRadioButton AMButton;
+    private javax.swing.JRadioButton PMButton;
     private javax.swing.JLabel addedNotif;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel dLabel;
+    private javax.swing.JLabel dateLabel;
     private javax.swing.JLabel dragLabel;
     private javax.swing.JButton exitButton;
     private javax.swing.JButton historyButton;
     private javax.swing.JTextArea historyLabel;
     private javax.swing.JPanel historyPanel;
+    private javax.swing.JSpinner hourSpinner;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JPanel medPanel;
+    private javax.swing.JButton medSubmissionButton;
+    private javax.swing.JPanel medSubmissionPanel;
+    private javax.swing.JTextField medicationField;
+    private javax.swing.JSpinner medsToTakeSpinner;
+    private javax.swing.JSpinner medsTotalSpinner;
+    private javax.swing.JSpinner minuteSpinner;
     private javax.swing.JButton notesButton;
     private javax.swing.JPanel notesPanel;
     private javax.swing.JTextArea notesText;
