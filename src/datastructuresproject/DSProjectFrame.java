@@ -36,6 +36,7 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
     private LocalTime lt = LocalTime.now();
     private final Calendar c = Calendar.getInstance(Locale.US);
     private File outputNotes = new File("src/datastructuresproject/notesHistory.txt");
+    private File outputMeds = new File("src/datastructuresproject/medsHistory.txt");
     private int xMouse, yMouse;
     /**
      * Creates new form DSProjectFrame
@@ -46,6 +47,37 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
         startTimer();
         buttonGroup1.add(AMButton);
         buttonGroup1.add(PMButton);
+        //initialize medication panel
+           try {
+             String line = null, hist = "";
+            // FileReader reads text files in the default encoding.
+            FileReader fileReader = 
+                new FileReader(outputNotes);
+
+            // Always wrap FileReader in BufferedReader.
+            BufferedReader bufferedReader = 
+                new BufferedReader(fileReader);
+
+            while((line = bufferedReader.readLine()) != null) {
+       
+                hist += "\n - "+line;
+          
+            }   
+if(!hist.equalsIgnoreCase(historyLabel.getText()))
+    historyLabel.setText(hist);
+    
+            // Always close files.
+            bufferedReader.close();         
+        }
+        catch(FileNotFoundException ex) {
+            System.out.println(
+                "Unable to open file '" + 
+                outputNotes + "'");                
+        }
+         catch (IOException ex1)
+         {
+             ex1.printStackTrace();
+         }
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -65,6 +97,8 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
         timeLabel = new javax.swing.JLabel();
         dateLabel = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        medLabel = new javax.swing.JTextArea();
         medSubmissionPanel = new javax.swing.JPanel();
         medicationField = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -89,6 +123,7 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
         jScrollPane2 = new javax.swing.JScrollPane();
         historyLabel = new javax.swing.JTextArea();
         dLabel = new javax.swing.JLabel();
+        clearAllButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("MyMed Premium");
@@ -127,15 +162,19 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
 
         jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
 
+        medLabel.setColumns(20);
+        medLabel.setRows(5);
+        jScrollPane3.setViewportView(medLabel);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(jScrollPane3)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 203, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
         );
 
         medSubmissionPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
@@ -168,45 +207,47 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
             }
         });
 
-        medSubmissionButton.setText("Submit Medication");
+        medSubmissionButton.setText("Add Medication");
+        medSubmissionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                medSubmissionButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout medSubmissionPanelLayout = new javax.swing.GroupLayout(medSubmissionPanel);
         medSubmissionPanel.setLayout(medSubmissionPanelLayout);
         medSubmissionPanelLayout.setHorizontalGroup(
             medSubmissionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(medSubmissionPanelLayout.createSequentialGroup()
-                .addGroup(medSubmissionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(medSubmissionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(medSubmissionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(medSubmissionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(medSubmissionPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(medSubmissionPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(hourSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(minuteSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(AMButton, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(PMButton))
+                    .addGroup(medSubmissionPanelLayout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(medicationField, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(medSubmissionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(medSubmissionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(medSubmissionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(medsToTakeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(medSubmissionPanelLayout.createSequentialGroup()
-                            .addGroup(medSubmissionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(medSubmissionPanelLayout.createSequentialGroup()
-                                    .addGap(12, 12, 12)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(medicationField, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(medSubmissionPanelLayout.createSequentialGroup()
-                                    .addContainerGap()
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addGroup(medSubmissionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(medSubmissionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(medsToTakeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(medSubmissionPanelLayout.createSequentialGroup()
-                                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(25, 25, 25)
-                                        .addComponent(medsTotalSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(medSubmissionPanelLayout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(hourSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(minuteSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(AMButton, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(PMButton))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(25, 25, 25)
+                            .addComponent(medsTotalSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         medSubmissionPanelLayout.setVerticalGroup(
             medSubmissionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -260,8 +301,8 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, medPanelLayout.createSequentialGroup()
                 .addComponent(timeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(dateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(dateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(medSubmissionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -371,7 +412,7 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(historyButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("History", historyPanel);
@@ -398,6 +439,13 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
             }
         });
 
+        clearAllButton.setText("Clear All History");
+        clearAllButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearAllButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -415,6 +463,8 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
                         .addComponent(titleImageLabel)
                         .addGap(87, 87, 87))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(clearAllButton, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())))
         );
@@ -429,7 +479,9 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 476, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(exitButton)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(exitButton)
+                    .addComponent(clearAllButton))
                 .addContainerGap())
         );
 
@@ -452,7 +504,7 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
             Logger.getLogger(DSProjectFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-    output.println("\""+notesText.getText()+"\"   ~"+ c.get(Calendar.MONTH)+"/"+c.get(Calendar.DAY_OF_MONTH)+ "/"+c.get(Calendar.YEAR)+" at "+timeLabel.getText());
+    output.println("\""+notesText.getText()+"\"  >"+ c.get(Calendar.MONTH)+"/"+c.get(Calendar.DAY_OF_MONTH)+ "/"+c.get(Calendar.YEAR)+" at "+timeLabel.getText());
 notesText.setText("");
     output.close();
     addedNotif.setForeground(new java.awt.Color(54, 97, 106));
@@ -493,7 +545,7 @@ notesText.setText("");
                 new BufferedReader(fileReader);
 
             while((line = bufferedReader.readLine()) != null) {
-                
+       
                 hist += "\n - "+line;
           
             }   
@@ -522,6 +574,57 @@ if(!hist.equalsIgnoreCase(historyLabel.getText()))
         // TODO add your handling code here:
     }//GEN-LAST:event_AMButtonActionPerformed
 
+    private void medSubmissionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_medSubmissionButtonActionPerformed
+      
+   PrintWriter output = null;
+        try {
+            output = new  PrintWriter(new FileOutputStream(outputMeds, true));
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(DSProjectFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      output.println(medicationField.getText()+" @"+
+              hourSpinner.getValue().toString()+":"+
+              minuteSpinner.getValue());
+ output.close();
+ 
+ try {
+             String line = null, hist = "";
+            // FileReader reads text files in the default encoding.
+            FileReader fileReader = 
+                new FileReader(outputMeds);
+
+            // Always wrap FileReader in BufferedReader.
+            BufferedReader bufferedReader = 
+                new BufferedReader(fileReader);
+
+            while((line = bufferedReader.readLine()) != null) {
+       
+                hist += "\n - "+line;
+          
+            }   
+if(!hist.equalsIgnoreCase(medLabel.getText()))
+    medLabel.setText(hist);
+    
+            // Always close files.
+            bufferedReader.close();         
+        }
+        catch(FileNotFoundException ex) {
+            System.out.println(
+                "Unable to open file '" + 
+                outputNotes + "'");                
+        }
+         catch (IOException ex1)
+         {
+             ex1.printStackTrace();
+         }
+
+    }//GEN-LAST:event_medSubmissionButtonActionPerformed
+
+    private void clearAllButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearAllButtonActionPerformed
+        outputNotes.delete();
+        outputMeds.delete();
+    }//GEN-LAST:event_clearAllButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -533,7 +636,7 @@ if(!hist.equalsIgnoreCase(historyLabel.getText()))
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -601,6 +704,7 @@ if(!hist.equalsIgnoreCase(historyLabel.getText()))
     private javax.swing.JRadioButton PMButton;
     private javax.swing.JLabel addedNotif;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JButton clearAllButton;
     private javax.swing.JLabel dLabel;
     private javax.swing.JLabel dateLabel;
     private javax.swing.JLabel dragLabel;
@@ -617,7 +721,9 @@ if(!hist.equalsIgnoreCase(historyLabel.getText()))
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTextArea medLabel;
     private javax.swing.JPanel medPanel;
     private javax.swing.JButton medSubmissionButton;
     private javax.swing.JPanel medSubmissionPanel;
