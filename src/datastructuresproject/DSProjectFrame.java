@@ -26,6 +26,7 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -38,6 +39,7 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
     private File outputNotes = new File("src/datastructuresproject/notesHistory.txt");
     private File outputMeds = new File("src/datastructuresproject/medsHistory.txt");
     private int xMouse, yMouse;
+    
     /**
      * Creates new form DSProjectFrame
      */
@@ -112,6 +114,7 @@ if(!hist.equalsIgnoreCase(historyLabel.getText()))
         PMButton = new javax.swing.JRadioButton();
         AMButton = new javax.swing.JRadioButton();
         medSubmissionButton = new javax.swing.JButton();
+        scheduleLabel = new javax.swing.JLabel();
         notesPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         notesButton = new javax.swing.JButton();
@@ -174,7 +177,7 @@ if(!hist.equalsIgnoreCase(historyLabel.getText()))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
         );
 
         medSubmissionPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
@@ -187,9 +190,13 @@ if(!hist.equalsIgnoreCase(historyLabel.getText()))
 
         jLabel2.setText("Medication:");
 
+        medsToTakeSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
+
         jLabel3.setText("Tablets / Pills to take:");
 
         jLabel4.setText("Tablets / Pills total:");
+
+        medsTotalSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
 
         jLabel5.setText("Time of Day: ");
 
@@ -278,23 +285,23 @@ if(!hist.equalsIgnoreCase(historyLabel.getText()))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        scheduleLabel.setFont(new java.awt.Font("Segoe UI Semibold", 1, 24)); // NOI18N
+        scheduleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        scheduleLabel.setText("Upcoming Medication Schedule");
+
         javax.swing.GroupLayout medPanelLayout = new javax.swing.GroupLayout(medPanel);
         medPanel.setLayout(medPanelLayout);
         medPanelLayout.setHorizontalGroup(
             medPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(medPanelLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, medPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(medPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, medPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(dateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(37, 37, 37))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, medPanelLayout.createSequentialGroup()
-                        .addGroup(medPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(medSubmissionPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(timeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE))
-                        .addContainerGap())))
+                .addGroup(medPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(dateLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(scheduleLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(medSubmissionPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(timeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE))
+                .addContainerGap())
         );
         medPanelLayout.setVerticalGroup(
             medPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -303,7 +310,9 @@ if(!hist.equalsIgnoreCase(historyLabel.getText()))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(dateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(scheduleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(medSubmissionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -465,8 +474,8 @@ if(!hist.equalsIgnoreCase(historyLabel.getText()))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(clearAllButton, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                        .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(19, 19, 19))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -476,12 +485,12 @@ if(!hist.equalsIgnoreCase(historyLabel.getText()))
                     .addComponent(dLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(titleImageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 476, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(exitButton)
-                    .addComponent(clearAllButton))
+                    .addComponent(clearAllButton)
+                    .addComponent(exitButton))
                 .addContainerGap())
         );
 
@@ -575,16 +584,32 @@ if(!hist.equalsIgnoreCase(historyLabel.getText()))
     }//GEN-LAST:event_AMButtonActionPerformed
 
     private void medSubmissionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_medSubmissionButtonActionPerformed
-      
+     if(medicationField.getText().isEmpty())
+      {
+          JOptionPane.showMessageDialog(this, "Enter your medication name.", "Error",
+        JOptionPane.ERROR_MESSAGE);
+      }
+      else
+      {
    PrintWriter output = null;
         try {
             output = new  PrintWriter(new FileOutputStream(outputMeds, true));
         } catch (FileNotFoundException ex) {
             Logger.getLogger(DSProjectFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-      output.println(medicationField.getText()+" @"+
+        String app = "AM";
+        if(PMButton.isSelected())
+            app = "PM";
+        
+        String zeroApp = "";
+  
+        if(minuteSpinner.getValue().toString().length()==1)
+            zeroApp = "0";
+        
+      output.println("Take "+medsToTakeSpinner.getValue()+" "+medicationField.getText()+" @"+
               hourSpinner.getValue().toString()+":"+
-              minuteSpinner.getValue());
+              minuteSpinner.getValue()+zeroApp+" "+app+", total: "+
+              medsTotalSpinner.getValue());
  output.close();
  
  try {
@@ -617,12 +642,14 @@ if(!hist.equalsIgnoreCase(medLabel.getText()))
          {
              ex1.printStackTrace();
          }
-
+      }
     }//GEN-LAST:event_medSubmissionButtonActionPerformed
 
     private void clearAllButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearAllButtonActionPerformed
         outputNotes.delete();
         outputMeds.delete();
+        medLabel.setText("");
+        historyLabel.setText("");
     }//GEN-LAST:event_clearAllButtonActionPerformed
 
     /**
@@ -671,6 +698,10 @@ if(!hist.equalsIgnoreCase(medLabel.getText()))
     @Override
     public void actionPerformed(ActionEvent e) 
     {
+        /*if(lt.getMinute() != Integer.parseInt(timeLabel.getText().substring(2,4)))
+        {
+            
+        }*/
         lt = LocalTime.now();
       String minAppend = "";
       String minColon = ":";
@@ -694,6 +725,8 @@ if(!hist.equalsIgnoreCase(medLabel.getText()))
          }
          
          dateLabel.setText((c.get(Calendar.MONTH)+1)+"/"+c.get(Calendar.DAY_OF_MONTH) + "/"+c.get(Calendar.YEAR));
+         
+         
        //  timeLabel.setText(timeLabel.getText() + " " + Calendar)
           repaint();
     }
@@ -734,6 +767,7 @@ if(!hist.equalsIgnoreCase(medLabel.getText()))
     private javax.swing.JButton notesButton;
     private javax.swing.JPanel notesPanel;
     private javax.swing.JTextArea notesText;
+    private javax.swing.JLabel scheduleLabel;
     private javax.swing.JLabel timeLabel;
     private javax.swing.JLabel titleImageLabel;
     // End of variables declaration//GEN-END:variables
