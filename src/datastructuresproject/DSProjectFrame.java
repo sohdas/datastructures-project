@@ -39,6 +39,7 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
     private File outputNotes = new File("src/datastructuresproject/notesHistory.txt");
     private File outputMeds = new File("src/datastructuresproject/medsHistory.txt");
     private int xMouse, yMouse;
+    private LinkedList medsList = new LinkedList("medsList");
     
     /**
      * Creates new form DSProjectFrame
