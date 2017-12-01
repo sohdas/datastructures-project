@@ -8,24 +8,24 @@ package datastructuresproject;
 
 import java.io.Serializable;
 
-public class LLNode implements Serializable
+public class LLNode <T> implements Serializable
 {
-  private String info;
+  private T info;
   private LLNode link;
   
-  public LLNode(String info)
+  public LLNode(T info)
   {
     this.info = info;
     link = null;
   }
  
-  public void setInfo(String info)
-  // Sets info string of this LLNode.
+  public void setInfo(T info)
+  // Sets info string o-f this LLNode.
   {
     this.info = info;
   }
 
-  public String getInfo()
+  public T getInfo()
   // Returns info string of this LLNode.
   {
     return info;

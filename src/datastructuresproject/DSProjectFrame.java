@@ -32,56 +32,67 @@ import javax.swing.JOptionPane;
  *
  * @author Somnath
  */
-public class DSProjectFrame extends javax.swing.JFrame implements ActionListener{
-    
+public class DSProjectFrame extends javax.swing.JFrame implements ActionListener {
+
     private LocalTime lt = LocalTime.now();
     private final Calendar c = Calendar.getInstance(Locale.US);
     private File outputNotes = new File("src/datastructuresproject/notesHistory.txt");
     private File outputMeds = new File("src/datastructuresproject/medsHistory.txt");
     private int xMouse, yMouse;
     private LinkedList medsList = new LinkedList("medsList");
-    
+    private LLNode medsNode = medsList.log;
+
     /**
      * Creates new form DSProjectFrame
      */
     public DSProjectFrame() {
-        initComponents(); 
-        getRootPane().setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, new Color(54,97,106)));
+        initComponents();
+        getRootPane().setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, new Color(54, 97, 106)));
         startTimer();
         buttonGroup1.add(AMButton);
         buttonGroup1.add(PMButton);
         //initialize medication panel
-           try {
-             String line = null, hist = "";
+        try {
+            String line = null, hist = "";
             // FileReader reads text files in the default encoding.
-            FileReader fileReader = 
-                new FileReader(outputNotes);
+            FileReader fileReader
+                    = new FileReader(outputNotes);
 
             // Always wrap FileReader in BufferedReader.
-            BufferedReader bufferedReader = 
-                new BufferedReader(fileReader);
+            BufferedReader bufferedReader
+                    = new BufferedReader(fileReader);
 
-            while((line = bufferedReader.readLine()) != null) {
-       
-                hist += "\n - "+line;
-          
-            }   
-if(!hist.equalsIgnoreCase(historyLabel.getText()))
-    historyLabel.setText(hist);
-    
+            while ((line = bufferedReader.readLine()) != null) {
+
+                hist += "\n - " + line;
+
+            }
+            if (!hist.equalsIgnoreCase(historyLabel.getText())) {
+                historyLabel.setText(hist);
+            }
+
             // Always close files.
-            bufferedReader.close();         
-        }
-        catch(FileNotFoundException ex) {
+            bufferedReader.close();
+
+            fileReader = new FileReader(outputMeds);
+            bufferedReader = new BufferedReader(fileReader);
+            String[] lineFrags;
+            while ((line = bufferedReader.readLine())!= null) {
+                lineFrags = line.split(";");
+                  
+                medsList.insert(new Medication(lineFrags[0],lineFrags[1],lineFrags[2]));
+             
+            }
+        } catch (FileNotFoundException ex) {
             System.out.println(
-                "Unable to open file '" + 
-                outputNotes + "'");                
+                    "Unable to open file '"
+                    + outputNotes + "'");
+        } catch (IOException ex1) {
+            ex1.printStackTrace();
         }
-         catch (IOException ex1)
-         {
-             ex1.printStackTrace();
-         }
+
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -107,8 +118,6 @@ if(!hist.equalsIgnoreCase(historyLabel.getText()))
         jLabel2 = new javax.swing.JLabel();
         medsToTakeSpinner = new javax.swing.JSpinner();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        medsTotalSpinner = new javax.swing.JSpinner();
         jLabel5 = new javax.swing.JLabel();
         hourSpinner = new javax.swing.JSpinner();
         minuteSpinner = new javax.swing.JSpinner();
@@ -166,6 +175,7 @@ if(!hist.equalsIgnoreCase(historyLabel.getText()))
 
         jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
 
+        medLabel.setEditable(false);
         medLabel.setColumns(20);
         medLabel.setRows(5);
         jScrollPane3.setViewportView(medLabel);
@@ -191,19 +201,16 @@ if(!hist.equalsIgnoreCase(historyLabel.getText()))
 
         jLabel2.setText("Medication:");
 
-        medsToTakeSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
+        medsToTakeSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, 12, 1));
 
         jLabel3.setText("Tablets / Pills to take:");
-
-        jLabel4.setText("Tablets / Pills total:");
-
-        medsTotalSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
 
         jLabel5.setText("Time of Day: ");
 
         hourSpinner.setModel(new javax.swing.SpinnerNumberModel(12, 1, 12, 1));
 
-        minuteSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, 45, 15));
+        minuteSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, 59, 1));
+        minuteSpinner.setToolTipText("");
 
         PMButton.setText("PM");
 
@@ -248,12 +255,9 @@ if(!hist.equalsIgnoreCase(historyLabel.getText()))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(medSubmissionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(medSubmissionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(medSubmissionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(medsToTakeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(medSubmissionPanelLayout.createSequentialGroup()
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(25, 25, 25)
-                            .addComponent(medsTotalSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(medSubmissionPanelLayout.createSequentialGroup()
+                        .addGap(142, 142, 142)
+                        .addComponent(medsToTakeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
@@ -262,14 +266,9 @@ if(!hist.equalsIgnoreCase(historyLabel.getText()))
             .addGroup(medSubmissionPanelLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addGroup(medSubmissionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(medSubmissionPanelLayout.createSequentialGroup()
-                        .addGroup(medSubmissionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(medsToTakeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(medSubmissionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(medsTotalSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(medSubmissionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel3)
+                        .addComponent(medsToTakeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(medSubmissionPanelLayout.createSequentialGroup()
                         .addGroup(medSubmissionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(medicationField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -500,25 +499,26 @@ if(!hist.equalsIgnoreCase(historyLabel.getText()))
     }// </editor-fold>//GEN-END:initComponents
 
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
-      System.exit(0);
+        System.exit(0);
     }//GEN-LAST:event_exitButtonActionPerformed
 
     private void notesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_notesButtonActionPerformed
         // TODO add your handling code here:
-        if(!notesText.getText().trim().isEmpty())
-        {
-   PrintWriter output = null;
-        try {
-            output = new  PrintWriter(new FileOutputStream(outputNotes, true));
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(DSProjectFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        if (!notesText.getText().trim().isEmpty()) {
+            PrintWriter output = null;
+            try {
+                output = new PrintWriter(new FileOutputStream(outputNotes, true));
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(DSProjectFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
-    output.println("\""+notesText.getText()+"\"  >"+ c.get(Calendar.MONTH)+"/"+c.get(Calendar.DAY_OF_MONTH)+ "/"+c.get(Calendar.YEAR)+" at "+timeLabel.getText());
-notesText.setText("");
-    output.close();
-    addedNotif.setForeground(new java.awt.Color(54, 97, 106));
- 
+            output.println("\"" + notesText.getText() + "\"  >" + c.get(Calendar.MONTH) 
+                    + "/" + c.get(Calendar.DAY_OF_MONTH) + "/" 
+                    + c.get(Calendar.YEAR) + " at " +
+                    timeLabel.getText().replaceFirst(":"," ").replaceFirst(" ", ":"));
+            notesText.setText("");
+            output.close();
+            addedNotif.setForeground(new java.awt.Color(54, 97, 106));
 
         }
     }//GEN-LAST:event_notesButtonActionPerformed
@@ -532,48 +532,46 @@ notesText.setText("");
     }//GEN-LAST:event_dLabelMouseClicked
 
     private void dLabelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dLabelMouseDragged
-         int x = evt.getXOnScreen();
+        int x = evt.getXOnScreen();
         int y = evt.getYOnScreen();
-        
-        this.setLocation(x - xMouse,y - yMouse);
+
+        this.setLocation(x - xMouse, y - yMouse);
     }//GEN-LAST:event_dLabelMouseDragged
 
     private void dLabelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dLabelMousePressed
-       xMouse = evt.getX();
-        yMouse = evt.getY();      
+        xMouse = evt.getX();
+        yMouse = evt.getY();
     }//GEN-LAST:event_dLabelMousePressed
 
     private void historyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_historyButtonActionPerformed
-         try {
-             String line = null, hist = "";
+        try {
+            String line = null, hist = "";
             // FileReader reads text files in the default encoding.
-            FileReader fileReader = 
-                new FileReader(outputNotes);
+            FileReader fileReader
+                    = new FileReader(outputNotes);
 
             // Always wrap FileReader in BufferedReader.
-            BufferedReader bufferedReader = 
-                new BufferedReader(fileReader);
+            BufferedReader bufferedReader
+                    = new BufferedReader(fileReader);
 
-            while((line = bufferedReader.readLine()) != null) {
-       
-                hist += "\n - "+line;
-          
-            }   
-if(!hist.equalsIgnoreCase(historyLabel.getText()))
-    historyLabel.setText(hist);
-    
+            while ((line = bufferedReader.readLine()) != null) {
+
+                hist += "\n - " + line;
+
+            }
+            if (!hist.equalsIgnoreCase(historyLabel.getText())) {
+                historyLabel.setText(hist);
+            }
+
             // Always close files.
-            bufferedReader.close();         
-        }
-        catch(FileNotFoundException ex) {
+            bufferedReader.close();
+        } catch (FileNotFoundException ex) {
             System.out.println(
-                "Unable to open file '" + 
-                outputNotes + "'");                
+                    "Unable to open file '"
+                    + outputNotes + "'");
+        } catch (IOException ex1) {
+            ex1.printStackTrace();
         }
-         catch (IOException ex1)
-         {
-             ex1.printStackTrace();
-         }
     }//GEN-LAST:event_historyButtonActionPerformed
 
     private void medicationFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_medicationFieldActionPerformed
@@ -585,65 +583,67 @@ if(!hist.equalsIgnoreCase(historyLabel.getText()))
     }//GEN-LAST:event_AMButtonActionPerformed
 
     private void medSubmissionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_medSubmissionButtonActionPerformed
-     if(medicationField.getText().isEmpty())
-      {
-          JOptionPane.showMessageDialog(this, "Enter your medication name.", "Error",
-        JOptionPane.ERROR_MESSAGE);
-      }
-      else
-      {
-   PrintWriter output = null;
-        try {
-            output = new  PrintWriter(new FileOutputStream(outputMeds, true));
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(DSProjectFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        String app = "AM";
-        if(PMButton.isSelected())
-            app = "PM";
-        
-        String zeroApp = "";
-  
-        if(minuteSpinner.getValue().toString().length()==1)
-            zeroApp = "0";
-        
-      output.println("Take "+medsToTakeSpinner.getValue()+" "+medicationField.getText()+" @"+
-              hourSpinner.getValue().toString()+":"+
-              minuteSpinner.getValue()+zeroApp+" "+app+", total: "+
-              medsTotalSpinner.getValue());
- output.close();
- 
- try {
-             String line = null, hist = "";
-            // FileReader reads text files in the default encoding.
-            FileReader fileReader = 
-                new FileReader(outputMeds);
+        if (medicationField.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Enter your medication name.", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        } else {
+            PrintWriter output = null;
+            try {
+                output = new PrintWriter(new FileOutputStream(outputMeds, true));
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(DSProjectFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            String app = "AM";
+            if (PMButton.isSelected()) {
+                app = "PM";
+            }
 
-            // Always wrap FileReader in BufferedReader.
-            BufferedReader bufferedReader = 
-                new BufferedReader(fileReader);
+            String zeroApp = "";
 
-            while((line = bufferedReader.readLine()) != null) {
-       
-                hist += "\n - "+line;
-          
-            }   
-if(!hist.equalsIgnoreCase(medLabel.getText()))
-    medLabel.setText(hist);
-    
-            // Always close files.
-            bufferedReader.close();         
+            if (minuteSpinner.getValue().toString().length() == 1) {
+                zeroApp = "0";
+            }
+
+            
+            output.println(medsToTakeSpinner.getValue() + ";" + medicationField.getText() + ";"
+                    + hourSpinner.getValue().toString() + ":"
+                    + minuteSpinner.getValue() + zeroApp + " " + app + ";"
+                    );
+            output.close();
+
+            try {
+                String line = null, hist = "";
+                // FileReader reads text files in the default encoding.
+                FileReader fileReader
+                        = new FileReader(outputMeds);
+
+                // Always wrap FileReader in BufferedReader.
+                BufferedReader bufferedReader
+                        = new BufferedReader(fileReader);
+
+                while ((line = bufferedReader.readLine()) != null) {
+                    System.out.println(hist);
+                    hist += "\n" + line;
+
+                }
+                String[] tempHist = hist.split(";");
+                String medText = "Take "+tempHist[0]+" "+tempHist[1]
+                            + " at "+tempHist[2];
+                if (!medText.equalsIgnoreCase(medLabel.getText())) {
+                    medLabel.setText(medText);
+                    
+                }
+
+                // Always close files.
+                bufferedReader.close();
+            } catch (FileNotFoundException ex) {
+                System.out.println(
+                        "Unable to open file '"
+                        + outputNotes + "'");
+            } catch (IOException ex1) {
+                ex1.printStackTrace();
+            }
         }
-        catch(FileNotFoundException ex) {
-            System.out.println(
-                "Unable to open file '" + 
-                outputNotes + "'");                
-        }
-         catch (IOException ex1)
-         {
-             ex1.printStackTrace();
-         }
-      }
     }//GEN-LAST:event_medSubmissionButtonActionPerformed
 
     private void clearAllButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearAllButtonActionPerformed
@@ -684,54 +684,63 @@ if(!hist.equalsIgnoreCase(medLabel.getText()))
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new DSProjectFrame().setVisible(true);
-               
+
             }
         });
-    
+
         /* We can put stuff below here */
-     
     }
-    public void startTimer()
-    {
-          Timer t = new Timer(1000, this);
-          t.start();
+
+    public void startTimer() {
+        Timer t = new Timer(1000, this);
+        t.start();
     }
+
     @Override
-    public void actionPerformed(ActionEvent e) 
-    {
+    public void actionPerformed(ActionEvent e) {
         /*if(lt.getMinute() != Integer.parseInt(timeLabel.getText().substring(2,4)))
         {
             
         }*/
         lt = LocalTime.now();
-      String minAppend = "";
-      String minColon = ":";
-      if(lt.getMinute()<10)
-    minAppend = "0";
-      if(lt.getSecond()%2 == 0)
-          minColon = " ";
- 
-      
-         if(lt.getHour()>12)
-         {
-            timeLabel.setText(lt.getHour()-12 + minColon+ minAppend+lt.getMinute() +" PM");
+        String minAppend = "";
+        String minColon = ":";
+        if (lt.getMinute() < 10) {
+            minAppend = "0";
+        }
+        if (lt.getSecond() % 2 == 0) {
+            minColon = " ";
+        }
+
+        if (lt.getHour() > 12) {
+            timeLabel.setText(lt.getHour() - 12 + minColon + minAppend + lt.getMinute() + " PM");
+        } else if (lt.getHour() == 12) {
+            timeLabel.setText(lt.getHour() + minColon + minAppend + lt.getMinute() + " PM");
+        } else {
+            timeLabel.setText(lt.getHour() + minColon + minAppend + lt.getMinute() + " AM");
+        }
+
+        dateLabel.setText((c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.DAY_OF_MONTH) + "/" + c.get(Calendar.YEAR));
+
+        medsNode = medsList.log;
+        boolean flag = true;
+        while(medsNode.getLink()!= null && flag)
+        {
+            if(((Medication)medsNode.getInfo()).getTime() == timeLabel.getText())
+            {
+                JOptionPane.showMessageDialog(this, "It's time to take "+
+                        ((Medication)medsNode.getInfo()).getAmtDose() + " pills of "
+                + ((Medication)medsNode.getInfo()).getName() +".", "Medication Reminder",
+                    JOptionPane.OK_OPTION);
+                
+                flag = false;
             }
-         else if(lt.getHour() == 12)
-         {
-           timeLabel.setText(lt.getHour() + minColon+ minAppend+lt.getMinute() + " PM");
-             }
-         else
-         {
-           timeLabel.setText(lt.getHour() + minColon+minAppend+lt.getMinute()+" AM");
-         }
-         
-         dateLabel.setText((c.get(Calendar.MONTH)+1)+"/"+c.get(Calendar.DAY_OF_MONTH) + "/"+c.get(Calendar.YEAR));
-         
-         
-       //  timeLabel.setText(timeLabel.getText() + " " + Calendar)
-          repaint();
+            
+            medsNode = medsNode.getLink();
+        }
+        repaint();
     }
-         
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton AMButton;
@@ -750,7 +759,6 @@ if(!hist.equalsIgnoreCase(medLabel.getText()))
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
@@ -763,7 +771,6 @@ if(!hist.equalsIgnoreCase(medLabel.getText()))
     private javax.swing.JPanel medSubmissionPanel;
     private javax.swing.JTextField medicationField;
     private javax.swing.JSpinner medsToTakeSpinner;
-    private javax.swing.JSpinner medsTotalSpinner;
     private javax.swing.JSpinner minuteSpinner;
     private javax.swing.JButton notesButton;
     private javax.swing.JPanel notesPanel;
