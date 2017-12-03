@@ -41,6 +41,7 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
     private int xMouse, yMouse;
     private LinkedList medsList = new LinkedList("medsList");
     private LLNode medsNode = medsList.log;
+    boolean flag = true;
 
     /**
      * Creates new form DSProjectFrame
@@ -73,16 +74,8 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
 
             // Always close files.
             bufferedReader.close();
+            medsListRefresh();
 
-            fileReader = new FileReader(outputMeds);
-            bufferedReader = new BufferedReader(fileReader);
-            String[] lineFrags;
-            while ((line = bufferedReader.readLine())!= null) {
-                lineFrags = line.split(";");
-                  
-                medsList.insert(new Medication(lineFrags[0],lineFrags[1],lineFrags[2]));
-             
-            }
         } catch (FileNotFoundException ex) {
             System.out.println(
                     "Unable to open file '"
@@ -91,6 +84,7 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
             ex1.printStackTrace();
         }
 
+        medLabelUpdate();
     }
 
     /**
@@ -501,7 +495,21 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
         System.exit(0);
     }//GEN-LAST:event_exitButtonActionPerformed
+    private void medsListRefresh() throws FileNotFoundException, IOException {
+        medsList.clear();
+        String line = "";
+        FileReader fileReader = new FileReader(outputMeds);
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        String[] lineFrags;
+        while ((line = bufferedReader.readLine()) != null) {
+            lineFrags = line.split(";");
 
+            medsList.insert(new Medication(lineFrags[0], lineFrags[1], lineFrags[2]));
+
+        }
+
+        bufferedReader.close();
+    }
     private void notesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_notesButtonActionPerformed
         // TODO add your handling code here:
         if (!notesText.getText().trim().isEmpty()) {
@@ -512,10 +520,10 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
                 Logger.getLogger(DSProjectFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            output.println("\"" + notesText.getText() + "\"  >" + c.get(Calendar.MONTH) 
-                    + "/" + c.get(Calendar.DAY_OF_MONTH) + "/" 
-                    + c.get(Calendar.YEAR) + " at " +
-                    timeLabel.getText().replaceFirst(":"," ").replaceFirst(" ", ":"));
+            output.println("\"" + notesText.getText() + "\"  >" + c.get(Calendar.MONTH)
+                    + "/" + c.get(Calendar.DAY_OF_MONTH) + "/"
+                    + c.get(Calendar.YEAR) + " at "
+                    + timeLabel.getText().replaceFirst(":", " ").replaceFirst(" ", ":"));
             notesText.setText("");
             output.close();
             addedNotif.setForeground(new java.awt.Color(54, 97, 106));
@@ -604,53 +612,78 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
                 zeroApp = "0";
             }
 
-            
             output.println(medsToTakeSpinner.getValue() + ";" + medicationField.getText() + ";"
                     + hourSpinner.getValue().toString() + ":"
-                    + minuteSpinner.getValue() + zeroApp + " " + app + ";"
-                    );
+                    + zeroApp + minuteSpinner.getValue() + " " + app + ";"
+            );
             output.close();
 
-            try {
-                String line = null, hist = "";
-                // FileReader reads text files in the default encoding.
-                FileReader fileReader
-                        = new FileReader(outputMeds);
-
-                // Always wrap FileReader in BufferedReader.
-                BufferedReader bufferedReader
-                        = new BufferedReader(fileReader);
-
-                while ((line = bufferedReader.readLine()) != null) {
-                    System.out.println(hist);
-                    hist += "\n" + line;
-
-                }
-                String[] tempHist = hist.split(";");
-                String medText = "Take "+tempHist[0]+" "+tempHist[1]
-                            + " at "+tempHist[2];
-                if (!medText.equalsIgnoreCase(medLabel.getText())) {
-                    medLabel.setText(medText);
-                    
-                }
-
-                // Always close files.
-                bufferedReader.close();
-            } catch (FileNotFoundException ex) {
-                System.out.println(
-                        "Unable to open file '"
-                        + outputNotes + "'");
-            } catch (IOException ex1) {
-                ex1.printStackTrace();
-            }
+            medLabelUpdate();
+            flag = true;
         }
     }//GEN-LAST:event_medSubmissionButtonActionPerformed
+    private void medLabelUpdate() {
 
+        try {
+            String line = null, hist = "";
+            // FileReader reads text files in the default encoding.
+            FileReader fileReader
+                    = new FileReader(outputMeds);
+
+            // Always wrap FileReader in BufferedReader.
+            BufferedReader bufferedReader
+                    = new BufferedReader(fileReader);
+
+            //set mark to reset BufferedReader (hope they don't have 1000 chars)
+            bufferedReader.mark(1000);
+
+            int tempc = 0;
+            while ((line = bufferedReader.readLine()) != null) {
+                tempc++;
+            }
+
+            String[][] tempHist = new String[tempc][3];
+            String medText = "";
+            tempc = 0;
+
+            //reset to mark
+            bufferedReader.reset();
+
+            while ((line = bufferedReader.readLine()) != null) {
+                hist += line + '\n';
+
+                tempHist[tempc] = line.split(";");
+
+                tempc++;
+
+            }
+
+            for (int x = 0; x < tempc; x++) {
+                medText += "\nTake " + tempHist[x][0] + " " + tempHist[x][1]
+                        + " at " + tempHist[x][2];
+
+            }
+            medLabel.setText(medText);
+
+            medsListRefresh();
+          
+            // Always close files.
+            bufferedReader.close();
+        } catch (FileNotFoundException ex) {
+            System.out.println(
+                    "Unable to open file '"
+                    + outputNotes + "'");
+        } catch (IOException ex1) {
+            ex1.printStackTrace();
+        }
+    }
     private void clearAllButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearAllButtonActionPerformed
         outputNotes.delete();
         outputMeds.delete();
         medLabel.setText("");
         historyLabel.setText("");
+
+        medsList.clear();
     }//GEN-LAST:event_clearAllButtonActionPerformed
 
     /**
@@ -721,23 +754,32 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
         }
 
         dateLabel.setText((c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.DAY_OF_MONTH) + "/" + c.get(Calendar.YEAR));
+// NOTIFICATION, THE FINAL THING TO DO 
 
-        medsNode = medsList.log;
-        boolean flag = true;
-        while(medsNode.getLink()!= null && flag)
-        {
-            if(((Medication)medsNode.getInfo()).getTime() == timeLabel.getText())
-            {
-                JOptionPane.showMessageDialog(this, "It's time to take "+
-                        ((Medication)medsNode.getInfo()).getAmtDose() + " pills of "
-                + ((Medication)medsNode.getInfo()).getName() +".", "Medication Reminder",
-                    JOptionPane.OK_OPTION);
+        LLNode temp = medsList.log;
+       
+        try{
+        while (temp.getLink() != null) {
+         
+            if (((Medication) temp.getInfo()).getTime().trim().equalsIgnoreCase(timeLabel.getText()) && flag) {
+              //makes the windows beep
+                java.awt.Toolkit.getDefaultToolkit().beep();
+                //displays message
+                JOptionPane.showMessageDialog(this, "It's time to take "
+                        + ((Medication) temp.getInfo()).getAmtDose() + " pills of "
+                        + ((Medication) temp.getInfo()).getName() + ".", "Medication Reminder",
+                        JOptionPane.OK_OPTION);
                 
                 flag = false;
             }
-            
-            medsNode = medsNode.getLink();
+
+            temp = temp.getLink();
         }
+        }catch(NullPointerException nullp){}
+       
+    
+
+// THE FINAL THING TO DO
         repaint();
     }
 

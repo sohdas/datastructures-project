@@ -17,10 +17,10 @@ public class Medication implements Serializable {
     private String name;
     private String amtDose;
 
-    public Medication(String t, String n, String a) {
-        time = "12:00 AM";
+    public Medication(String a, String n, String t) {
+        time = t;
         name = n;
-        amtDose = "1";
+        amtDose = a;
     }
 
     public String toString() {
