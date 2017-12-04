@@ -16,6 +16,7 @@ public class Medication implements Serializable {
     private String time;
     private String name;
     private String amtDose;
+    private boolean reminder;
 
     public Medication(String a, String n, String t) {
         time = t;
@@ -24,7 +25,7 @@ public class Medication implements Serializable {
     }
 
     public String toString() {
-        return name + " @" + time + " @" + amtDose;
+        return amtDose + ";" + name + ";" + time;
     }
 
     public String getTime() {
@@ -49,6 +50,12 @@ public class Medication implements Serializable {
 
     public void setAmtDose(String amtDose) {
         this.amtDose = amtDose;
+    }
+    public void setReminder(boolean x){
+        this.reminder = x;
+    }
+    public boolean getReminder(){
+        return reminder;
     }
 
 }

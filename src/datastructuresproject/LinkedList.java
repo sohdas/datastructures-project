@@ -143,4 +143,11 @@ public class LinkedList <T> implements Serializable
 			return;
 		log = log.getLink();
 	}
+        public void removeLast(){
+            LLNode temp = this.log;
+            while(temp.getLink().getLink()!= null){
+                temp= temp.getLink();
+            }
+            temp.setLink(null);
+        }
 }

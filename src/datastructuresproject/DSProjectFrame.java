@@ -182,7 +182,10 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         medSubmissionPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
@@ -281,7 +284,7 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
 
         scheduleLabel.setFont(new java.awt.Font("Segoe UI Semibold", 1, 24)); // NOI18N
         scheduleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        scheduleLabel.setText("Upcoming Medication Schedule");
+        scheduleLabel.setText("Medication Schedule");
 
         javax.swing.GroupLayout medPanelLayout = new javax.swing.GroupLayout(medPanel);
         medPanel.setLayout(medPanelLayout);
@@ -304,11 +307,12 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(dateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(scheduleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
+                .addComponent(scheduleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(medSubmissionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(medSubmissionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Medications", medPanel);
@@ -415,7 +419,7 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(historyButton)
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("History", historyPanel);
@@ -479,8 +483,8 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
                     .addComponent(dLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(titleImageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 476, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 494, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(clearAllButton)
@@ -507,7 +511,7 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
             medsList.insert(new Medication(lineFrags[0], lineFrags[1], lineFrags[2]));
 
         }
-
+        fileReader.close();
         bufferedReader.close();
     }
     private void notesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_notesButtonActionPerformed
@@ -622,60 +626,47 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
             flag = true;
         }
     }//GEN-LAST:event_medSubmissionButtonActionPerformed
+   
+    //update medlabel with contents of linked list
     private void medLabelUpdate() {
-
-        try {
-            String line = null, hist = "";
-            // FileReader reads text files in the default encoding.
-            FileReader fileReader
-                    = new FileReader(outputMeds);
-
-            // Always wrap FileReader in BufferedReader.
-            BufferedReader bufferedReader
-                    = new BufferedReader(fileReader);
-
-            //set mark to reset BufferedReader (hope they don't have 1000 chars)
-            bufferedReader.mark(1000);
-
+  try {
+            medsListRefresh();
+        } catch (IOException ex) {
+            System.out.println("File not found.");
+        }
             int tempc = 0;
-            while ((line = bufferedReader.readLine()) != null) {
+
+            LLNode tempNode = medsList.log;
+            String hist = "", medText = "";
+            
+            String[][] tempHist = new String[medsList.size()][3];
+           try{
+            while (tempNode.equals(medsList.log)||tempNode.getLink() !=null) {
+                hist = tempNode.getInfo().toString();
+                
+                tempHist[tempc] = hist.split(";");
                 tempc++;
+                
+                if(tempNode.equals(medsList.log))
+                    if(tempNode.getLink() == null)
+                        break;
+                tempNode = tempNode.getLink();
             }
-
-            String[][] tempHist = new String[tempc][3];
-            String medText = "";
-            tempc = 0;
-
-            //reset to mark
-            bufferedReader.reset();
-
-            while ((line = bufferedReader.readLine()) != null) {
-                hist += line + '\n';
-
-                tempHist[tempc] = line.split(";");
-
-                tempc++;
-
-            }
-
-            for (int x = 0; x < tempc; x++) {
+         
+            for (int x = 0; x < medsList.size(); x++) {
+                System.out.println(x+"--->"+tempHist[x][0]);
                 medText += "\nTake " + tempHist[x][0] + " " + tempHist[x][1]
                         + " at " + tempHist[x][2];
 
             }
             medLabel.setText(medText);
 
-            medsListRefresh();
-          
-            // Always close files.
-            bufferedReader.close();
-        } catch (FileNotFoundException ex) {
-            System.out.println(
-                    "Unable to open file '"
-                    + outputNotes + "'");
-        } catch (IOException ex1) {
-            ex1.printStackTrace();
-        }
+           }
+           catch(NullPointerException exx)
+           {
+              System.out.println("List unfilled as of now.");
+           }
+      
     }
     private void clearAllButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearAllButtonActionPerformed
         outputNotes.delete();
@@ -754,22 +745,72 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
         }
 
         dateLabel.setText((c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.DAY_OF_MONTH) + "/" + c.get(Calendar.YEAR));
-// NOTIFICATION, THE FINAL THING TO DO 
+
 
         LLNode temp = medsList.log;
        
         try{
-        while (temp.getLink() != null) {
+        while ( temp.equals(medsList.log) || temp.getLink() != null) {
          
             if (((Medication) temp.getInfo()).getTime().trim().equalsIgnoreCase(timeLabel.getText()) && flag) {
               //makes the windows beep
                 java.awt.Toolkit.getDefaultToolkit().beep();
                 //displays message
-                JOptionPane.showMessageDialog(this, "It's time to take "
+                int response;
+                final int addConst = 5;
+                response = JOptionPane.showConfirmDialog(null, "It's time to take "
                         + ((Medication) temp.getInfo()).getAmtDose() + " pills of "
-                        + ((Medication) temp.getInfo()).getName() + ".", "Medication Reminder",
-                        JOptionPane.OK_OPTION);
-                
+                        + ((Medication) temp.getInfo()).getName() + ".", "Did you take it?",
+                        JOptionPane.YES_NO_CANCEL_OPTION);
+                if (response != JOptionPane.YES_OPTION){
+                    Medication tMed1 = (Medication) temp.getInfo();
+                    Medication tMed;
+                    if(lt.getMinute()+1 < 60){
+                        if(lt.getHour() > 12){
+                            if(lt.getMinute()+1<10){
+                                 tMed = new Medication(tMed1.getAmtDose(),tMed1.getName(),(lt.getHour()-12)+":"+0+(lt.getMinute()+addConst)+" PM");
+                    tMed.setReminder(true);
+                            }
+                            else{
+                   tMed = new Medication(tMed1.getAmtDose(),tMed1.getName(),(lt.getHour()-12)+":"+(lt.getMinute()+addConst)+" "+"PM");
+                    tMed.setReminder(true);
+                            }
+                        }
+                        else{
+                            if(lt.getMinute()+1<10){
+                              tMed = new Medication(tMed1.getAmtDose(),tMed1.getName(),(lt.getHour())+":"+0+(lt.getMinute()+addConst)+" AM");
+                    tMed.setReminder(true);
+                            }
+                            else{
+                                  tMed = new Medication(tMed1.getAmtDose(),tMed1.getName(),(lt.getHour())+":"+(lt.getMinute()+addConst)+" AM");
+                    tMed.setReminder(true);
+                            }
+                        }
+                    }
+                    else{
+                        if(lt.getHour()>12){
+                            
+                       tMed = new Medication(tMed1.getAmtDose(),tMed1.getName(),((lt.getHour()-12)+1)+":"+0+(60-(lt.getMinute()+addConst))+" PM");
+                    tMed.setReminder(true);
+                        }
+                        else{
+                             tMed = new Medication(tMed1.getAmtDose(),tMed1.getName(),((lt.getHour())+1)+":"+0+(60-(lt.getMinute()+addConst))+" PM");
+                    tMed.setReminder(true);
+                        }
+                    }
+                   System.out.println( tMed.getTime());
+                  System.out.println( medsList.toStringContents());
+                    medsList.insert(tMed);
+                    System.out.println( medsList.toStringContents());
+                    medLabelUpdate();
+                }
+                if (response == JOptionPane.YES_OPTION){
+                    Medication tMed = (Medication) temp.getInfo();
+                    if(tMed.getReminder()){
+                        medsList.removeFirst();
+                        medLabelUpdate();
+                    }
+                }
                 flag = false;
             }
 
@@ -779,7 +820,6 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
        
     
 
-// THE FINAL THING TO DO
         repaint();
     }
 
