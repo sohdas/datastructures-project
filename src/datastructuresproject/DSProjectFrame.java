@@ -30,7 +30,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Somnath
+ * @author Soham and Brooks
  */
 public class DSProjectFrame extends javax.swing.JFrame implements ActionListener {
 
@@ -42,6 +42,7 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
     private LinkedList medsList = new LinkedList("medsList");
     private LLNode medsNode = medsList.log;
     boolean flag = true;
+    private int lastMinute;
 
     /**
      * Creates new form DSProjectFrame
@@ -507,7 +508,6 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
         String[] lineFrags;
         while ((line = bufferedReader.readLine()) != null) {
             lineFrags = line.split(";");
-
             medsList.insert(new Medication(lineFrags[0], lineFrags[1], lineFrags[2]));
 
         }
@@ -572,7 +572,7 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
 
             }
             if (!hist.equalsIgnoreCase(historyLabel.getText())) {
-                historyLabel.setText(hist);
+                historyLabel.setText(historyLabel.getText()+hist);
             }
 
             // Always close files.
@@ -620,53 +620,61 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
                     + hourSpinner.getValue().toString() + ":"
                     + zeroApp + minuteSpinner.getValue() + " " + app + ";"
             );
+
             output.close();
 
-            medLabelUpdate();
             flag = true;
         }
+
+        medLabelUpdate();
     }//GEN-LAST:event_medSubmissionButtonActionPerformed
-   
+
     //update medlabel with contents of linked list
     private void medLabelUpdate() {
-  try {
-            medsListRefresh();
-        } catch (IOException ex) {
-            System.out.println("File not found.");
-        }
-            int tempc = 0;
+        try {
+            try {
+                medsListRefresh();
+            } catch (IOException ex) {
+                System.out.println("File not found.");
+            }
+            int tempc = 1;
 
             LLNode tempNode = medsList.log;
             String hist = "", medText = "";
-            
+
             String[][] tempHist = new String[medsList.size()][3];
-           try{
-            while (tempNode.equals(medsList.log)||tempNode.getLink() !=null) {
-                hist = tempNode.getInfo().toString();
-                
-                tempHist[tempc] = hist.split(";");
-                tempc++;
-                
-                if(tempNode.equals(medsList.log))
-                    if(tempNode.getLink() == null)
-                        break;
-                tempNode = tempNode.getLink();
-            }
-         
-            for (int x = 0; x < medsList.size(); x++) {
-                System.out.println(x+"--->"+tempHist[x][0]);
-                medText += "\nTake " + tempHist[x][0] + " " + tempHist[x][1]
-                        + " at " + tempHist[x][2];
+            try {
+                if (tempNode.equals(medsList.log)) {
 
-            }
-            medLabel.setText(medText);
+                    tempHist[0] = tempNode.getInfo().toString().split(";");
+                    medText = "\nTake " + tempHist[0][0] + " " + tempHist[0][1]
+                            + " at " + tempHist[0][2];
+                }
+                while (tempNode.getLink() != null) {
 
-           }
-           catch(NullPointerException exx)
-           {
-              System.out.println("List unfilled as of now.");
-           }
-      
+                    tempNode = tempNode.getLink();
+
+                    hist = tempNode.getInfo().toString();
+                    tempHist[tempc] = hist.split(";");
+                    tempc++;
+
+                }
+
+                for (int x = 1; x < medsList.size(); x++) {
+
+                    medText += "\nTake " + tempHist[x][0] + " " + tempHist[x][1]
+                            + " at " + tempHist[x][2];
+
+                }
+                medLabel.setText(medText);
+
+            } catch (NullPointerException exx) {
+                System.out.println("List unfilled as of now.");
+            }
+        } catch (ArrayIndexOutOfBoundsException arrexe) {// temporary workaround
+
+        }
+
     }
     private void clearAllButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearAllButtonActionPerformed
         outputNotes.delete();
@@ -729,6 +737,8 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
         lt = LocalTime.now();
         String minAppend = "";
         String minColon = ":";
+        final int addConst = 1;
+        
         if (lt.getMinute() < 10) {
             minAppend = "0";
         }
@@ -746,79 +756,84 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
 
         dateLabel.setText((c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.DAY_OF_MONTH) + "/" + c.get(Calendar.YEAR));
 
-
         LLNode temp = medsList.log;
-       
-        try{
-        while ( temp.equals(medsList.log) || temp.getLink() != null) {
-         
-            if (((Medication) temp.getInfo()).getTime().trim().equalsIgnoreCase(timeLabel.getText()) && flag) {
-              //makes the windows beep
-                java.awt.Toolkit.getDefaultToolkit().beep();
-                //displays message
-                int response;
-                final int addConst = 5;
-                response = JOptionPane.showConfirmDialog(null, "It's time to take "
-                        + ((Medication) temp.getInfo()).getAmtDose() + " pills of "
-                        + ((Medication) temp.getInfo()).getName() + ".", "Did you take it?",
-                        JOptionPane.YES_NO_CANCEL_OPTION);
-                if (response != JOptionPane.YES_OPTION){
-                    Medication tMed1 = (Medication) temp.getInfo();
-                    Medication tMed;
-                    if(lt.getMinute()+1 < 60){
-                        if(lt.getHour() > 12){
-                            if(lt.getMinute()+1<10){
-                                 tMed = new Medication(tMed1.getAmtDose(),tMed1.getName(),(lt.getHour()-12)+":"+0+(lt.getMinute()+addConst)+" PM");
-                    tMed.setReminder(true);
+
+        try {
+            while (temp.equals(medsList.log) || temp.getLink() != null) {
+                
+                if (((Medication) temp.getInfo()).getTime().trim().equalsIgnoreCase(timeLabel.getText()) && flag) {
+                    //makes the windows beep
+                    java.awt.Toolkit.getDefaultToolkit().beep();
+                    
+                    //displays message
+                    int response;
+                   
+                    response = JOptionPane.showConfirmDialog(null, "It's time to take "
+                            + ((Medication) temp.getInfo()).getAmtDose() + " pills of "
+                            + ((Medication) temp.getInfo()).getName() + ".", "Did you take it?",
+                            JOptionPane.YES_NO_OPTION);
+                    if (response != JOptionPane.YES_OPTION) {
+                        
+                        Medication tMed1 = (Medication) temp.getInfo();
+                        Medication tRemind;
+                        if (lt.getMinute() + 1 < 60) {
+                            if (lt.getHour() > 12) {
+                                if (lt.getMinute() + 1 < 10) {
+                                    tRemind = new Medication(tMed1.getAmtDose(), tMed1.getName(), (lt.getHour() - 12) + ":" + 0 + (lt.getMinute() + addConst) + " PM");
+                                    tRemind.setReminder(true);
+                                } else {
+                                    tRemind = new Medication(tMed1.getAmtDose(), tMed1.getName(), (lt.getHour() - 12) + ":" + (lt.getMinute() + addConst) + " " + "PM");
+                                    tRemind.setReminder(true);
+                                }
+                            } else {
+                                if (lt.getMinute() + 1 < 10) {
+                                    tRemind = new Medication(tMed1.getAmtDose(), tMed1.getName(), (lt.getHour()) + ":" + 0 + (lt.getMinute() + addConst) + " AM");
+                                    tRemind.setReminder(true);
+                                } else {
+                                    tRemind = new Medication(tMed1.getAmtDose(), tMed1.getName(), (lt.getHour()) + ":" + (lt.getMinute() + addConst) + " AM");
+                                    tRemind.setReminder(true);
+                                }
                             }
-                            else{
-                   tMed = new Medication(tMed1.getAmtDose(),tMed1.getName(),(lt.getHour()-12)+":"+(lt.getMinute()+addConst)+" "+"PM");
-                    tMed.setReminder(true);
+                        } else {
+                            if (lt.getHour() > 12) {
+
+                                tRemind = new Medication(tMed1.getAmtDose(), tMed1.getName(), ((lt.getHour() - 12) + 1) + ":" + 0 + (60 - (lt.getMinute() + addConst)) + " PM");
+                                tRemind.setReminder(true);
+                            } else {
+                                tRemind = new Medication(tMed1.getAmtDose(), tMed1.getName(), ((lt.getHour()) + 1) + ":" + 0 + (60 - (lt.getMinute() + addConst)) + " PM");
+                                tRemind.setReminder(true);
                             }
                         }
-                        else{
-                            if(lt.getMinute()+1<10){
-                              tMed = new Medication(tMed1.getAmtDose(),tMed1.getName(),(lt.getHour())+":"+0+(lt.getMinute()+addConst)+" AM");
-                    tMed.setReminder(true);
-                            }
-                            else{
-                                  tMed = new Medication(tMed1.getAmtDose(),tMed1.getName(),(lt.getHour())+":"+(lt.getMinute()+addConst)+" AM");
-                    tMed.setReminder(true);
-                            }
-                        }
-                    }
-                    else{
-                        if(lt.getHour()>12){
-                            
-                       tMed = new Medication(tMed1.getAmtDose(),tMed1.getName(),((lt.getHour()-12)+1)+":"+0+(60-(lt.getMinute()+addConst))+" PM");
-                    tMed.setReminder(true);
-                        }
-                        else{
-                             tMed = new Medication(tMed1.getAmtDose(),tMed1.getName(),((lt.getHour())+1)+":"+0+(60-(lt.getMinute()+addConst))+" PM");
-                    tMed.setReminder(true);
-                        }
-                    }
-                   System.out.println( tMed.getTime());
-                  System.out.println( medsList.toStringContents());
-                    medsList.insert(tMed);
-                    System.out.println( medsList.toStringContents());
-                    medLabelUpdate();
-                }
-                if (response == JOptionPane.YES_OPTION){
-                    Medication tMed = (Medication) temp.getInfo();
-                    if(tMed.getReminder()){
-                        medsList.removeFirst();
+                        System.out.println(tRemind.getTime());
+                        System.out.println(medsList.toStringContents());
+                        medsList.insert(tRemind);
+                        System.out.println(medsList.toStringContents());
                         medLabelUpdate();
                     }
+                    if (response == JOptionPane.YES_OPTION) {
+                     
+                        Medication tMed = (Medication) temp.getInfo();
+                        if(lastMinute != lt.getMinute())
+                        {
+                        
+                            if(!outputNotes.exists())
+                             outputNotes = new File("src/datastructuresproject/notesHistory.txt");
+                        
+                        medLabelUpdate();
+                            historyLabel.setText(historyLabel.getText()
+                                 + "\nYou took " + tMed.getAmtDose() + " pills of "
+                                    + tMed.getName() + " at "
+                                    + tMed.getTime());
+                      lastMinute = lt.getMinute();
+                        }
+                    }
+                    flag = false;
                 }
-                flag = false;
-            }
 
-            temp = temp.getLink();
+                temp = temp.getLink();
+            }
+        } catch (NullPointerException nullp) {
         }
-        }catch(NullPointerException nullp){}
-       
-    
 
         repaint();
     }
