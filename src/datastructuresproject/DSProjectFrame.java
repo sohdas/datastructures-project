@@ -625,23 +625,23 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
 
             flag = true;
         }
-
+        try {
+            medsListRefresh();
+        } catch (IOException ex) {
+            Logger.getLogger(DSProjectFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
         medLabelUpdate();
     }//GEN-LAST:event_medSubmissionButtonActionPerformed
 
     //update medlabel with contents of linked list
     private void medLabelUpdate() {
         try {
-            try {
-                medsListRefresh();
-            } catch (IOException ex) {
-                System.out.println("File not found.");
-            }
+            
             int tempc = 1;
 
             LLNode tempNode = medsList.log;
             String hist = "", medText = "";
-
+            System.out.println(medsList.toStringContents());
             String[][] tempHist = new String[medsList.size()][3];
             try {
                 if (tempNode.equals(medsList.log)) {
@@ -804,10 +804,16 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
                                 tRemind.setReminder(true);
                             }
                         }
-                        System.out.println(tRemind.getTime());
-                        System.out.println(medsList.toStringContents());
+                     
                         medsList.insert(tRemind);
-                        System.out.println(medsList.toStringContents());
+                        PrintWriter output = null;
+            try {
+                output = new PrintWriter(new FileOutputStream(outputNotes, true));
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(DSProjectFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            output.println(/*insert med stuff*/);
                         medLabelUpdate();
                     }
                     if (response == JOptionPane.YES_OPTION) {
