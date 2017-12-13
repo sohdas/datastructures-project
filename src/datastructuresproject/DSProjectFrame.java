@@ -41,7 +41,8 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
     private int xMouse, yMouse;
     private LinkedList medsList = new LinkedList("medsList");
     private LLNode medsNode = medsList.log;
-    boolean flag = true;
+    private boolean flag = true;
+    private boolean metaFlag = false;
     private int lastMinute;
 
     /**
@@ -485,7 +486,7 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(titleImageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 494, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 494, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(clearAllButton)
@@ -572,7 +573,7 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
 
             }
             if (!hist.equalsIgnoreCase(historyLabel.getText())) {
-                historyLabel.setText(historyLabel.getText()+hist);
+                historyLabel.setText(historyLabel.getText() + hist);
             }
 
             // Always close files.
@@ -636,7 +637,7 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
     //update medlabel with contents of linked list
     private void medLabelUpdate() {
         try {
-            
+
             int tempc = 1;
 
             LLNode tempNode = medsList.log;
@@ -738,7 +739,7 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
         String minAppend = "";
         String minColon = ":";
         final int addConst = 1;
-        
+
         if (lt.getMinute() < 10) {
             minAppend = "0";
         }
@@ -760,20 +761,20 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
 
         try {
             while (temp.equals(medsList.log) || temp.getLink() != null) {
-                
+                System.out.println(temp.getInfo() + "    " + flag);
                 if (((Medication) temp.getInfo()).getTime().trim().equalsIgnoreCase(timeLabel.getText()) && flag) {
                     //makes the windows beep
                     java.awt.Toolkit.getDefaultToolkit().beep();
-                    
+
                     //displays message
                     int response;
-                   
+
                     response = JOptionPane.showConfirmDialog(null, "It's time to take "
                             + ((Medication) temp.getInfo()).getAmtDose() + " pills of "
                             + ((Medication) temp.getInfo()).getName() + ".", "Did you take it?",
                             JOptionPane.YES_NO_OPTION);
                     if (response != JOptionPane.YES_OPTION) {
-                        
+
                         Medication tMed1 = (Medication) temp.getInfo();
                         Medication tRemind;
                         if (lt.getMinute() + 1 < 60) {
@@ -804,35 +805,42 @@ public class DSProjectFrame extends javax.swing.JFrame implements ActionListener
                                 tRemind.setReminder(true);
                             }
                         }
-                     
+
                         medsList.insert(tRemind);
                         PrintWriter output = null;
-            try {
-                output = new PrintWriter(new FileOutputStream(outputNotes, true));
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(DSProjectFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
+                        try {
+                            output = new PrintWriter(new FileOutputStream(outputNotes, true));
+                        } catch (FileNotFoundException ex) {
+                            Logger.getLogger(DSProjectFrame.class.getName()).log(Level.SEVERE, null, ex);
+                        }
 
-            output.println(/*insert med stuff*/);
+                        output.println(tMed1.getAmtDose() + ";" + tMed1.getName() + ";" + tRemind.getTime());
+                        metaFlag = true;
                         medLabelUpdate();
                     }
                     if (response == JOptionPane.YES_OPTION) {
-                     
+
                         Medication tMed = (Medication) temp.getInfo();
-                        if(lastMinute != lt.getMinute())
-                        {
-                        
-                            if(!outputNotes.exists())
-                             outputNotes = new File("src/datastructuresproject/notesHistory.txt");
-                        
-                        medLabelUpdate();
+                        if (lastMinute != lt.getMinute()) {
+
+                            if (!outputNotes.exists()) {
+                                outputNotes = new File("src/datastructuresproject/notesHistory.txt");
+                            }
+
+                            medLabelUpdate();
                             historyLabel.setText(historyLabel.getText()
-                                 + "\nYou took " + tMed.getAmtDose() + " pills of "
+                                    + "\nYou took " + tMed.getAmtDose() + " pills of "
                                     + tMed.getName() + " at "
                                     + tMed.getTime());
-                      lastMinute = lt.getMinute();
+                            lastMinute = lt.getMinute();
                         }
                     }
+                    if(metaFlag)
+                    {
+                        flag = true;
+                        metaFlag = false;
+                    }
+                    else
                     flag = false;
                 }
 
